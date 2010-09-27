@@ -11,21 +11,20 @@ augroup shadow
 augroup END
 
 function! ShadowRead()
+  if !filereadable(expand('%') . '.shd') | return | endif
   let b:actual = expand("%")
   let b:shadow = b:actual . ".shd"
-  if !filereadable(b:shadow) | return | endif
 
   call setline(1, readfile(b:shadow, 'b'))
 endfunction
 
 function! ShadowWritePre()
-  if !filereadable(b:shadow) | return | endif
+  if !filereadable(expand('%') . '.shd') | return | endif
   call writefile(getline(1, '$'), b:shadow, 'b')
 endfunction
 
 function! ShadowWritePost()
-  if !filereadable(b:shadow) | return | endif
-
+  if !filereadable(expand('%') . '.shd') | return | endif
   let system = exists('g:loaded_vimproc') ? 'vimproc#system' : 'system'
   let nl = (&ff == 'mac') ? "\r" : (&ff == 'unix') ? "\n" : "\r\n"
 
