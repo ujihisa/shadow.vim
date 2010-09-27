@@ -10,9 +10,7 @@ function! ShadowRead()
   let b:shadow = b:actual . ".shd"
   if !filereadable(b:shadow) | return | endif
 
-  normal! ggdG
-  execute "read" b:shadow
-  normal! ggdd
+  call setline(1, readfile(b:shadow, 'b'))
 endfunction
 
 function! ShadowWritePre()
