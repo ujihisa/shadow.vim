@@ -15,6 +15,7 @@ function! s:shadow_read()
 
   autocmd BufWriteCmd <buffer> call s:shadow_write()
 
+  % delete _
   call setline(1, readfile(b:shadow, 'b'))
 endfunction
 
