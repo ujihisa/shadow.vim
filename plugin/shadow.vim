@@ -1,3 +1,8 @@
+if exists('g:loaded_shadow') | finish | endif
+let s:save_cpo = &cpo
+set cpo&vim
+
+
 augroup shadow
   autocmd!
   autocmd BufReadPost * call ShadowRead()
@@ -30,3 +35,8 @@ function! ShadowWritePost()
   let result = {system}(cmd, body, 'b')
   call writefile(split(result, nl), b:actual, 'b')
 endfunction
+
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+let g:loaded_shadow = 1
