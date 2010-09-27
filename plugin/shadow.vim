@@ -6,8 +6,6 @@ set cpo&vim
 augroup shadow
   autocmd!
   autocmd BufReadPost * call s:shadow_read()
-  autocmd BufWritePre * call s:shadow_write_pre()
-  autocmd BufWritePost * call s:shadow_write_post()
 augroup END
 
 function! s:shadow_read()
@@ -15,16 +13,16 @@ function! s:shadow_read()
   let b:actual = expand("%")
   let b:shadow = b:actual . ".shd"
 
+  autocmd BufWriteCmd <buffer> call s:shadow_write()
+
   call setline(1, readfile(b:shadow, 'b'))
 endfunction
 
-function! s:shadow_write_pre()
+function! s:shadow_write()
   if !filereadable(expand('%') . '.shd') | return | endif
   call writefile(getline(1, '$'), b:shadow, 'b')
-endfunction
+  set nomodified
 
-function! s:shadow_write_post()
-  if !filereadable(expand('%') . '.shd') | return | endif
   let system = exists('g:loaded_vimproc') ? 'vimproc#system' : 'system'
   let nl = (&ff == 'mac') ? "\r" : (&ff == 'unix') ? "\n" : "\r\n"
 
