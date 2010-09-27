@@ -24,6 +24,12 @@ a.pl (actually):
 
 There's no commands or functions you have to use explicitly.
 
+## Use Case
+
+* Commit JavaScript files which was written in CoffeeScript
+* Use `cpp` command before commiting Java files.
+* Markdown, Haml or something else to HTML
+
 ## Limitation
 
 The pair of a shadow file and the actual file is always 1-to-1 pair. That makes everything simple.
