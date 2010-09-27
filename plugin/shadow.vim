@@ -21,7 +21,7 @@ endfunction
 function! ShadowWritePost()
   if !filereadable(b:shadow) | return | endif
 
-  let system = (globpath(&rtp, 'plugin/vimproc.vim') != '') ? 'vimproc#system' : 'system'
+  let system = g:loaded_vimproc ? 'vimproc#system' : 'system'
   let nl = (&ff == 'mac') ? "\r" : (&ff == 'unix') ? "\n" : "\r\n"
 
   let cmd = getline(1)[3:-1]
