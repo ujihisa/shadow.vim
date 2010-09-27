@@ -31,7 +31,7 @@ function! s:shadow_write_post()
   let cmd = getline(1)[3:-1]
   "let cmd = substitute(cmd, '%', expand('%'), '')
   let body = join(getline(2, '$'), nl)
-  let result = {system}(cmd, body, 'b')
+  let result = {system}(cmd, body)
   call writefile(split(result, nl), b:actual, 'b')
 endfunction
 
