@@ -1,4 +1,4 @@
-# shashd.vim
+# shadow.vim
 
 "Nobody knows the Java code you committed is originally written in Scheme."
 
@@ -26,7 +26,7 @@ There's no commands or functions you have to use explicitly.
 
 ## Limitation
 
-The pair of a shashd file and the actual file is always 1-to-1 pair. That makes everything simple.
+The pair of a shadow file and the actual file is always 1-to-1 pair. That makes everything simple.
 
 ## Author
 
