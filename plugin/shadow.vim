@@ -5,12 +5,12 @@ set cpo&vim
 
 augroup shadow
   autocmd!
-  autocmd BufReadPost * call ShadowRead()
-  autocmd BufWritePre * call ShadowWritePre()
-  autocmd BufWritePost * call ShadowWritePost()
+  autocmd BufReadPost * call s:shadow_read()
+  autocmd BufWritePre * call s:shadow_write_pre()
+  autocmd BufWritePost * call s:shadow_write_post()
 augroup END
 
-function! ShadowRead()
+function! s:shadow_read()
   if !filereadable(expand('%') . '.shd') | return | endif
   let b:actual = expand("%")
   let b:shadow = b:actual . ".shd"
@@ -18,12 +18,12 @@ function! ShadowRead()
   call setline(1, readfile(b:shadow, 'b'))
 endfunction
 
-function! ShadowWritePre()
+function! s:shadow_write_pre()
   if !filereadable(expand('%') . '.shd') | return | endif
   call writefile(getline(1, '$'), b:shadow, 'b')
 endfunction
 
-function! ShadowWritePost()
+function! s:shadow_write_post()
   if !filereadable(expand('%') . '.shd') | return | endif
   let system = exists('g:loaded_vimproc') ? 'vimproc#system' : 'system'
   let nl = (&ff == 'mac') ? "\r" : (&ff == 'unix') ? "\n" : "\r\n"
