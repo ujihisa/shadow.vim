@@ -13,7 +13,10 @@ function! s:shadow_read()
   let b:actual = expand("%")
   let b:shadow = b:actual . ".shd"
 
-  autocmd BufWriteCmd <buffer> call s:shadow_write()
+  augroup shadow2
+    autocmd!
+    autocmd BufWriteCmd <buffer> call s:shadow_write()
+  augroup END
 
   % delete _
   call setline(1, readfile(b:shadow, 'b'))
