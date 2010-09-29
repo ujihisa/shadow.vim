@@ -27,6 +27,24 @@ There's no commands or functions you have to use explicitly.
 ## Use Case
 
 * Commit JavaScript files which was written in CoffeeScript
+
+    * before
+
+                ## coffee -cs --no-wrap
+                f: (x) -> x + 1
+                print f 10
+
+                # vim: set ft=coffee :
+
+    * after
+
+                ({
+                  f: function(x) {
+                    return x + 1;
+                  }
+                });
+                print(f(10));
+
 * Use `cpp` command before commiting Java files.
 * Markdown, Haml or something else to HTML
 
