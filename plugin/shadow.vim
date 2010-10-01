@@ -6,25 +6,18 @@ set cpo&vim
 augroup shadow
   autocmd!
   autocmd BufReadPost * call s:shadow_read()
+  autocmd BufWriteCmd * call s:shadow_write()
 augroup END
 
 function! s:shadow_read()
   if !filereadable(expand('%') . '.shd') | return | endif
-  let b:actual = expand("%")
-  let b:shadow = b:actual . ".shd"
-
-  augroup shadow2
-    autocmd!
-    autocmd BufWriteCmd <buffer> call s:shadow_write()
-  augroup END
-
   % delete _
-  call setline(1, readfile(b:shadow, 'b'))
+  call setline(1, readfile(expand("%") . '.shd', 'b'))
 endfunction
 
 function! s:shadow_write()
   if !filereadable(expand('%') . '.shd') | return | endif
-  call writefile(getline(1, '$'), b:shadow, 'b')
+  call writefile(getline(1, '$'), expand("%") . '.shd', 'b')
   set nomodified
 
   let system = exists('g:loaded_vimproc') ? 'vimproc#system' : 'system'
@@ -34,7 +27,7 @@ function! s:shadow_write()
   "let cmd = substitute(cmd, '%', expand('%'), '')
   let body = join(getline(2, '$'), nl)
   let result = {system}(cmd, body)
-  call writefile(split(result, nl), b:actual, 'b')
+  call writefile(split(result, nl), expand("%"), 'b')
 endfunction
 
 
