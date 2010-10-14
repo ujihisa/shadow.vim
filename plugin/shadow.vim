@@ -31,6 +31,10 @@ function! s:shadow_write()
   call writefile(split(result, nl), expand("%"), 'b')
 endfunction
 
+" for debug
+if exists('g:shadow_debug')
+  nnoremap <Space>- :<C-u>QuickRun cat -into 1<Cr>
+endif
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
