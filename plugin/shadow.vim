@@ -36,6 +36,15 @@ if exists('g:shadow_debug')
   nnoremap <Space>- :<C-u>QuickRun cat -into 1<Cr>
 endif
 
+" experimental functions
+function! Shadowize()
+  if filereadable(expand("%") . '.shd')
+    echoerr "The shadow file already exists"
+    return
+  endif
+  call system(printf("cp %s %s", expand("%"), expand("%") . '.shd'))
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 let g:loaded_shadow = 1
