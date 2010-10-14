@@ -1,10 +1,10 @@
 # shadow.vim
 
-"Nobody knows the Java code you committed is originally written in Scheme."
+> "Nobody knows the Java code you committed is originally written in Scheme."
 
 ## Usage
 
-Assuming the product is `a.pl`, create `a.pl.shd`.
+Assuming the product is `a.pl`, create `a.pl.shd` first.
 
 a.pl (in Vim):
 
@@ -26,24 +26,26 @@ There's no commands or functions you have to use explicitly.
 
 ## Use Case
 
+Here there are three examples, but you can use more general purposes.
+
 * Commit JavaScript files which was written in CoffeeScript
 
     * before
 
                 ## coffee -cs --no-wrap
-                f: (x) -> x + 1
+                f = (x) -> x + 1
                 print f 10
 
                 # vim: set ft=coffee :
 
     * after
 
-                ({
-                  f: function(x) {
-                    return x + 1;
-                  }
-                });
+                var f;
+                f = function(x) {
+                  return x + 1;
+                };
                 print(f(10));
+
 
 * Use `cpp` command before commiting Java files.
 * Markdown, Haml or something else to HTML
