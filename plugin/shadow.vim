@@ -5,14 +5,15 @@ set cpo&vim
 
 augroup shadow
   autocmd!
-  autocmd BufReadPost * call s:shadow_read()
-  autocmd BufWriteCmd * call s:shadow_write()
+  autocmd BufRead,BufNewFile * call s:shadow_read()
 augroup END
 
 function! s:shadow_read()
   if !filereadable(expand('%') . '.shd') | return | endif
   % delete _
   call setline(1, readfile(expand("%") . '.shd', 'b'))
+
+  autocmd BufWriteCmd <buffer> call s:shadow_write()
 endfunction
 
 function! s:shadow_write()
