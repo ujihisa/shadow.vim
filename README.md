@@ -32,7 +32,7 @@ Here there are three examples, but you can use more general purposes.
 
     * before
 
-                ## coffee -cs --no-wrap
+                ## coffee -csb
                 f = (x) -> x + 1
                 print f 10
 
