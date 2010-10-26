@@ -45,6 +45,13 @@ function! Shadowize()
   call system(printf("cp %s %s", expand("%"), expand("%") . '.shd'))
 endfunction
 
+function! GitAddBoth()
+  if filereadable(expand("%") . '.shd')
+    call GitAdd(expand("%") . '.shd')
+  endif
+  call GitAdd()
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 let g:loaded_shadow = 1
