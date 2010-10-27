@@ -49,7 +49,7 @@ function! GitAddBoth()
   if filereadable(expand("%") . '.shd')
     call GitAdd(expand("%") . '.shd')
   endif
-  call GitAdd()
+  call GitAdd('')
 endfunction
 
 let &cpo = s:save_cpo
