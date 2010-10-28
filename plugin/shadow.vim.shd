@@ -16,6 +16,7 @@ function! s:shadow_read()
   GUARD_HAS_SHADOW()
   % delete _
   call setline(1, readfile(SHADOW, 'b'))
+  $ delete _
 
   augroup shadow-buffer
     autocmd! * <buffer>
