@@ -13,9 +13,8 @@ function! s:shadow_read()
   % delete _
   call setline(1, readfile(expand("%") . '.shd', 'b'))
 
-  augroup shadow
-    autocmd!
-    autocmd BufRead,BufNewFile * call s:shadow_read()
+  augroup shadow-buffer
+    autocmd! <buffer>
     autocmd BufWriteCmd <buffer> call s:shadow_write()
   augroup END
 endfunction
