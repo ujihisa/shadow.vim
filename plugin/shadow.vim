@@ -14,7 +14,7 @@ function! s:shadow_read()
   call setline(1, readfile(expand("%") . '.shd', 'b'))
 
   augroup shadow-buffer
-    autocmd! <buffer>
+    autocmd! * <buffer>
     autocmd BufWriteCmd <buffer> call s:shadow_write()
   augroup END
 endfunction
