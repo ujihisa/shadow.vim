@@ -1,0 +1,65 @@
+## cpp -P -
+#define GUARD_HAS_SHADOW() if !filereadable(expand('%') . '.shd') | return | endif
+#define ACTUAL expand("%")
+#define SHADOW ACTUAL . '.shd'
+if exists('g:loaded_shadow') | finish | endif
+let s:save_cpo = &cpo
+set cpo&vim
+
+
+augroup shadow
+  autocmd!
+  autocmd BufRead,BufNewFile * call s:shadow_read()
+augroup END
+
+function! s:shadow_read()
+  GUARD_HAS_SHADOW()
+  % delete _
+  call setline(1, readfile(SHADOW, 'b'))
+
+  augroup shadow-buffer
+    autocmd! * <buffer>
+    autocmd BufWriteCmd <buffer> call s:shadow_write()
+  augroup END
+endfunction
+
+function! s:shadow_write()
+  GUARD_HAS_SHADOW()
+  call writefile(getline(1, '$'), SHADOW, 'b')
+  set nomodified
+
+  let system = exists('g:loaded_vimproc') ? 'vimproc#system' : 'system'
+  let nl = (&ff == 'mac') ? "\r" : (&ff == 'unix') ? "\n" : "\r\n"
+
+  let cmd = getline(1)[3:-1]
+  "let cmd = substitute(cmd, '%', expand('%'), '')
+  let body = join(getline(2, '$'), nl)
+  let result = {system}(cmd, body)
+  call writefile(split(result, nl), ACTUAL, 'b')
+endfunction
+
+" for debug
+if exists('g:shadow_debug')
+  nnoremap <Space>- :<C-u>QuickRun cat -into 1<Cr>
+endif
+
+" experimental functions
+function! Shadowize()
+  if filereadable(SHADOW)
+    echoerr "The shadow file already exists"
+    return
+  endif
+  call system(printf("cp %s %s", ACTUAL, SHADOW))
+endfunction
+
+function! GitAddBoth()
+  if filereadable(SHADOW)
+    call GitAdd(SHADOW)
+  endif
+  call GitAdd('')
+endfunction
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+let g:loaded_shadow = 1
+
