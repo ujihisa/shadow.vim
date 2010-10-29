@@ -12,7 +12,6 @@ function! s:shadow_read()
   if !filereadable(expand('%') . '.shd') | return | endif
   % delete _
   call setline(1, readfile(expand("%") . '.shd', 'b'))
-  $ delete _
 
   augroup shadow-buffer
     autocmd! * <buffer>
