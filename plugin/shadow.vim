@@ -5,8 +5,14 @@ set cpo&vim
 
 augroup shadow
   autocmd!
-  autocmd BufRead,BufNewFile,FileChangedShell * call s:shadow_read()
+  autocmd BufRead,BufNewFile * call s:shadow_read()
+  autocmd FileChangedShell * call s:shadow_force_modeline()
 augroup END
+
+function! s:shadow_force_modeline()
+  if !filereadable(expand('%') . '.shd') | return | endif
+  edit
+endfunction
 
 function! s:shadow_read()
   if !filereadable(expand('%') . '.shd') | return | endif
