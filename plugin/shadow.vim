@@ -17,7 +17,8 @@ endfunction
 function! s:shadow_read()
   if !filereadable(expand('%') . '.shd') | return | endif
   % delete _
-  call setline(1, readfile(expand("%") . '.shd', 'b'))
+  execute printf("read ++ff=%s %s", &ff, expand("%") . '.shd')
+  0 delete _
 
   augroup shadow-buffer
     autocmd! * <buffer>
@@ -27,7 +28,7 @@ endfunction
 
 function! s:shadow_write()
   if !filereadable(expand('%') . '.shd') | return | endif
-  call writefile(getline(1, '$'), expand("%") . '.shd', 'b')
+  silent execute printf("write! ++ff=%s %s", &ff, expand("%") . '.shd')
   set nomodified
 
   let system = exists('g:loaded_vimproc') ? 'vimproc#system' : 'system'
@@ -37,7 +38,19 @@ function! s:shadow_write()
   "let cmd = substitute(cmd, '%', expand('%'), '')
   let body = join(getline(2, '$'), nl)
   let result = {system}(cmd, body)
-  call writefile(split(result, nl), expand("%"), 'b')
+  call s:writefile_with_ff(result, expand("%"), &ff)
+endfunction
+
+function! s:writefile_with_ff(content, fname, ff)
+  if a:ff == 'mac'
+    echoerr "shadow.vim doesn't support &ff=mac yet."
+  elseif a:ff == 'unix'
+    call writefile(split(a:content, "\n"), expand("%"), 'b')
+  elseif a:ff == 'dos'
+    call writefile(map(split(a:content, "\n"), "v:val . \"\\r\""), expand("%"), 'b')
+  else
+    echoerr "give shadow.vim &ff"
+  endif
 endfunction
 
 " for debug
