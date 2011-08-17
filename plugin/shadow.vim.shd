@@ -78,6 +78,8 @@ function! GitAddBoth()
   call GitAdd('')
 endfunction
 
+command! -nargs=0 ShadowCancel autocmd! shadow-buffer
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 let g:loaded_shadow = 1
